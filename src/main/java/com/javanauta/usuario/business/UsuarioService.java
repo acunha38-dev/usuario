@@ -21,11 +21,17 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO) {
+    public UsuarioDTO salvarUsuario(UsuarioDTO usuarioDTO) {
+
         emailExiste(usuarioDTO.getEmail());
+
         usuarioDTO.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
+
+        // CONVERTER USUARIO DTO PARA ENTITY
         Usuario usuario = usuarioConverter.paraUsuario(usuarioDTO);
+
         usuario = usuarioRepository.save(usuario);
+
         return usuarioConverter.paraUsuarioDTO(usuario);
     }
     public void emailExiste(String email) {

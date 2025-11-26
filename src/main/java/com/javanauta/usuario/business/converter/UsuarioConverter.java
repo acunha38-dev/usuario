@@ -14,7 +14,10 @@ import java.util.List;
 @Component
 
 public class UsuarioConverter {
-    // transforma Entity num DTO
+
+    // Busca dados da UsuarioDTO e joga na entity Usuario////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////
+
     public Usuario paraUsuario(UsuarioDTO usuarioDTO) {
         return Usuario.builder()
                 .nome(usuarioDTO.getNome())
@@ -25,7 +28,7 @@ public class UsuarioConverter {
                 .build();
 
     }
-
+    // FORMA 1 DE FAZER
     public List<Endereco> paraListaEndereco(List<EnderecoDTO> enderecoDTOS) {
         List<Endereco> enderecos = new ArrayList<>();
         for (EnderecoDTO enderecoDTO : enderecoDTOS) {
@@ -35,7 +38,7 @@ public class UsuarioConverter {
         return enderecos;
     }
 
-    // FORMA 1 DE FAZER
+
     public Endereco paraEndereco(EnderecoDTO enderecoDTO) {
         return Endereco.builder()
                 .rua(enderecoDTO.getRua())
@@ -47,7 +50,7 @@ public class UsuarioConverter {
                 .build();
     }
 
-    // FORMA 2 DE FAZER
+    // FORMA 2 DE FAZER É IGUAL O FOR ACIMA DO ENDERECO stream map
     public List<Telefone> paraListaTelefones(List<TelefoneDTO> telefoneDTOS) {
         return telefoneDTOS.stream().map(this::paraTelefone).toList();
 
@@ -62,7 +65,8 @@ public class UsuarioConverter {
     }
 
 
-    // transforma DTO numa entity ///////////////////////////////////////////
+    // // /// Busca dados da Usuario  e joga na   UsuarioDTO ////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
     public UsuarioDTO paraUsuarioDTO(Usuario usuarioDTO) {
         return UsuarioDTO.builder()
@@ -75,6 +79,8 @@ public class UsuarioConverter {
 
     }
 
+
+    // FORMA 1 DE FAZER
     public List<EnderecoDTO> paraListaEnderecoDTO(List<Endereco> enderecoDTOS) {
         List<EnderecoDTO> enderecos = new ArrayList<>();
         for (Endereco enderecoDTO : enderecoDTOS) {
@@ -84,7 +90,7 @@ public class UsuarioConverter {
         return enderecos;
     }
 
-    // FORMA 1 DE FAZER
+
     public EnderecoDTO paraEnderecoDTO(Endereco enderecoDTO) {
         return EnderecoDTO.builder()
                 .rua(enderecoDTO.getRua())
@@ -97,6 +103,7 @@ public class UsuarioConverter {
     }
 
     // FORMA 2 DE FAZER
+
     public List<TelefoneDTO> paraListaTelefonesDTO(List<Telefone> telefoneDTOS) {
         return telefoneDTOS.stream().map(this::paraTelefoneDTO).toList();
 
