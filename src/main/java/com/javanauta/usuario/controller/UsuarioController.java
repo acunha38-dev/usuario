@@ -7,6 +7,8 @@ import com.javanauta.usuario.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +24,18 @@ public class UsuarioController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
+    // login
+    @PostMapping("/login")
+    public String login(@RequestBody UsuarioDTO usuarioDTO) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(usuarioDTO.getEmail(),
+                        usuarioDTO.getSenha())
+        );
 
+        return "Bearer " + jwtUtil.generateToken(authentication.getName());
+
+
+    }
 
     // padrão post para SALVAR USUARIO!!!!
     @PostMapping
