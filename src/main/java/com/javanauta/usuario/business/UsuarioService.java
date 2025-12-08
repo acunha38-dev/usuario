@@ -7,6 +7,7 @@ import com.javanauta.usuario.infrastructure.entity.Usuario;
 import com.javanauta.usuario.infrastructure.exceptions.ConflictException;
 import com.javanauta.usuario.infrastructure.exceptions.ResourceNotFoundException;
 import com.javanauta.usuario.infrastructure.repository.UsuarioRepository;
+import com.javanauta.usuario.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioConverter usuarioConverter;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
 
     public UsuarioDTO salvarUsuario(UsuarioDTO usuarioDTO) {
@@ -34,6 +36,7 @@ public class UsuarioService {
 
         return usuarioConverter.paraUsuarioDTO(usuario);
     }
+
     public void emailExiste(String email) {
         try {
             // Chama o método que consulta o banco
@@ -70,4 +73,24 @@ public class UsuarioService {
 
     }
 
- }
+    public UsuarioDTO atualizaDadosUsuario(String token, UsuarioDTO dto) {
+
+        // extraí o email do token!!! retirando a string Bearer
+        String email = jwtUtil.extractUsername(token.substring(7));
+
+        // criptografia de senha, só se foi alterada
+        dto.setSenha(dto.getSenha() != null ? passwordEncoder.encode(dto.getSenha()) : null);
+
+        // agora que tem o email, vai buscar o usuario na base
+        Usuario usuarioEntity = usuarioRepository.findByEmail(email).orElseThrow(() ->
+                new ResourceNotFoundException("Email não cadastrado!"));
+
+        // mesclou dados do DTO x dados da base de dados
+        Usuario usuario = usuarioConverter.updateUsuario(dto, usuarioEntity);
+
+
+        // SALVOU OS DADOS DO USUARIO CONVERTIDO E DEPOIS PEGOU O RETORNO E CONVERTEU PARA USUARIO DTO
+        return usuarioConverter.paraUsuarioDTO(usuarioRepository.save(usuario));
+
+    }
+}

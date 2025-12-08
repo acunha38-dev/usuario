@@ -25,8 +25,10 @@ public class UsuarioController {
     private final JwtUtil jwtUtil;
 
     // login
+    // Criando e definindo (assinando) o método login na Controller.
+    // O Spring chamará este método quando chegar um POST em /login.
     @PostMapping("/login")
-    public String login(@RequestBody UsuarioDTO usuarioDTO) {
+       public String login(@RequestBody UsuarioDTO usuarioDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(usuarioDTO.getEmail(),
                         usuarioDTO.getSenha())
@@ -38,6 +40,7 @@ public class UsuarioController {
     }
 
     // padrão post para SALVAR USUARIO!!!!
+    //É a assinatura do método salvaUsuario na controller
     @PostMapping
     public ResponseEntity<UsuarioDTO> salvaUsuario(@RequestBody UsuarioDTO usuarioDTO){
         return ResponseEntity.ok(usuarioService.salvarUsuario(usuarioDTO));
@@ -46,16 +49,27 @@ public class UsuarioController {
 
 
     // Padrão para consulta
+    //É a assinatura do método buscaUsuarioPorEmail na controller
     @GetMapping
     public ResponseEntity<Usuario> buscaUsuarioPorEmail(@RequestParam("email") String email){
         return ResponseEntity.ok(usuarioService.buscaUsuarioPorEmail(email));
 
     }
-
+    //É a assinatura do método deleteUsuarioPorEmail na controller
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteUsuarioPorEmail(@PathVariable String email) {
         usuarioService.deletaUsuarioPorEmail(email);
         return ResponseEntity.ok().build();
+
+    }
+
+    //UPDATE NA BASE
+    @PutMapping
+    //É a assinatura do método atualizaDadosUsuario na controller
+     public ResponseEntity<UsuarioDTO> atualizaDadosUsuario(@RequestHeader("Authorization") String token,
+                                                           @RequestBody UsuarioDTO usuarioDTO) {
+
+        return ResponseEntity.ok(usuarioService.atualizaDadosUsuario(token, usuarioDTO));
 
     }
 
