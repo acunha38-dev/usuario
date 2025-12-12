@@ -1,6 +1,8 @@
 package com.javanauta.usuario.controller;
 
 import com.javanauta.usuario.business.UsuarioService;
+import com.javanauta.usuario.business.dto.EnderecoDTO;
+import com.javanauta.usuario.business.dto.TelefoneDTO;
 import com.javanauta.usuario.business.dto.UsuarioDTO;
 import com.javanauta.usuario.infrastructure.entity.Usuario;
 import com.javanauta.usuario.infrastructure.security.JwtUtil;
@@ -51,7 +53,7 @@ public class UsuarioController {
     // Padrão para consulta
     //É a assinatura do método buscaUsuarioPorEmail na controller
     @GetMapping
-    public ResponseEntity<Usuario> buscaUsuarioPorEmail(@RequestParam("email") String email){
+    public ResponseEntity<UsuarioDTO> buscaUsuarioPorEmail(@RequestParam("email") String email){
         return ResponseEntity.ok(usuarioService.buscaUsuarioPorEmail(email));
 
     }
@@ -73,4 +75,19 @@ public class UsuarioController {
 
     }
 
+    @PutMapping("/endereco")
+    //É a assinatura do método atualizaDadosUsuario na controller
+    public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestBody EnderecoDTO enderecoDTO,
+                                                        @RequestParam("id") Long id) {
+
+        return ResponseEntity.ok(usuarioService.atualizaEndereco(id,enderecoDTO));
+    }
+
+    @PutMapping("/telefone")
+    //É a assinatura do método atualizaDadosUsuario na controller
+    public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO telefoneDTO,
+                                                            @RequestParam("id") Long id) {
+
+        return ResponseEntity.ok(usuarioService.atualizaTelefone(id,telefoneDTO));
+    }
 }
