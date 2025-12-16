@@ -74,7 +74,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.atualizaDadosUsuario(token, usuarioDTO));
 
     }
-
+    // altera endereco
     @PutMapping("/endereco")
     //É a assinatura do método atualizaDadosUsuario na controller
     public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestBody EnderecoDTO enderecoDTO,
@@ -82,7 +82,7 @@ public class UsuarioController {
 
         return ResponseEntity.ok(usuarioService.atualizaEndereco(id,enderecoDTO));
     }
-
+    // altera  telefone
     @PutMapping("/telefone")
     //É a assinatura do método atualizaDadosUsuario na controller
     public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO telefoneDTO,
@@ -90,4 +90,23 @@ public class UsuarioController {
 
         return ResponseEntity.ok(usuarioService.atualizaTelefone(id,telefoneDTO));
     }
+
+    // cadastro de endereco
+    @PostMapping("/endereco")
+    //É a assinatura do método atualizaDadosUsuario na controller
+    public ResponseEntity<EnderecoDTO> cadastraEndereco(@RequestBody EnderecoDTO enderecoDTO,
+                                                        @RequestHeader("Authorization") String token) {
+
+        return ResponseEntity.ok(usuarioService.cadastraEndereco(token , enderecoDTO));
+    }
+
+    // cadastro de telefone
+    @PostMapping("/telefone")
+    //É a assinatura do método atualizaDadosUsuario na controller
+    public ResponseEntity<TelefoneDTO> cadastraTelefone(@RequestBody TelefoneDTO telefoneDTO,
+                                                        @RequestHeader("Authorization") String token) {
+
+        return ResponseEntity.ok(usuarioService.cadastraTelefone(token , telefoneDTO));
+    }
+
 }
